@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ManzanaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//ruta para ver municipios
+Route::get('/dashboard', [ManzanaController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+//insertar municipio
+Route::get('/formInsertar', [ManzanaController::class, 'create'])->middleware(['auth', 'verified'])->name('formInsertar');
+Route::post('/formInsertar', [ManzanaController::class, 'store'])->middleware(['before', 'after'])->name('formInsertar.store');
+//modificar municipio
+Route::get('/formUpdate/{manzana}', [ManzanaController::class, 'edit'])->middleware(['auth', 'verified'])->name('formUpdate');
+Route::post('/formUpdate', [ManzanaController::class, 'update'])->middleware(['auth', 'verified'])->name('formUpdate.update');
+
+//ruta eliminar
+Route::post('/dashboard/{manzana}', [ManzanaController::class, 'destroy'])->middleware(['before', 'after'])->name('dashboard.eliminar');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
